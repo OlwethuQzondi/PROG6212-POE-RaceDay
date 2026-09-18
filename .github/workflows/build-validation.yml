@@ -1,0 +1,47 @@
+name: RaceDay Build & SQL Validation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code Repository
+      uses: actions/checkout@v4
+
+    - name: Verify Documentation Directory Structure
+      run: |
+        if [ -d "docs" ]; then
+          echo "Documentation folder 'docs/' located successfully."
+        else
+          echo "ERROR: Missing 'docs/' directory."
+          exit 1
+        fi
+
+    - name: Validate Database Schema Script
+      run: |
+        if [ -f "docs/RaceDay_Schema.sql" ]; then
+          echo "Database schema script 'docs/RaceDay_Schema.sql' located successfully."
+        else
+          echo "ERROR: Missing 'docs/RaceDay_Schema.sql' script."
+          exit 1
+        fi
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Build Solution (If Solution Exists)
+      run: |
+        if ls *.sln 1> /dev/null 2>&1; then
+          dotnet restore
+          dotnet build --no-restore --configuration Release
+        else
+          echo "No .NET solution file found yet. Build validation skipped until Part 2 application code is added."
+        fi
