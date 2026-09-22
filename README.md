@@ -1,46 +1,60 @@
-# PROG6212 Portfolio of Evidence (Part 1): RaceDay Event Management Platform
+# RaceDay Event Management System
+**Portfolio of Evidence: PROG6212 (Programming 2B) - Part 1**
 
-## Project Overview
-**RaceDay** is an enterprise-grade event management web application developed for local motorsport and athletic events. The system streamlines event scheduling, competitor registrations, category assignments, and real-time result publishing.
-
-## Directory Structure
-```text
-PROG6212-POE-RaceDay/
-├── .github/
-│   └── workflows/
-│       └── build-validation.yml    # CI/CD GitHub Actions pipeline definition
-├── docs/
-│   └── RaceDay_Schema.sql         # Idempotent T-SQL database creation & seed script
-├── .gitignore                      # Visual Studio environment ignore configuration
-└── README.md                       # Project documentation and architecture summary
-```
+**Student Details**
+* **Name:** Olwethu Qiniso Zondi
+* **Program:** Bachelor of Computer and Information Sciences in Application Development
+* **Campus:** Emeris Durban North Campus
+* **Module:** PROG6212 (Programming 2B)
 
 ---
 
-## Database Architecture
-The platform utilizes a relational SQL Server database ('RaceDayDb') configured with third-normal-form (3NF) relational integrity and proper cascade rules.
+## 1. Project Overview
+RaceDay is a comprehensive web application designed to streamline the management of community sporting events. The system facilitates the creation of events by organizers, tracks participant enrolments across varying distance categories, manages entry fee structures, and records official race results. This documentation covers the foundational database architecture, RESTful API endpoint planning, and Continuous Integration (CI/CD) implementation for Part 1 of the project lifecycle.
 
-* **`Roles`**: System user permissions ('Administrator', 'Organizer', 'Competitor').
-* **`Users`**: Account profiles linked to security roles.
-* **`Events`**: Scheduled race events with start dates, locations, and status flags.
-* **`EventCategories`**: Sub-divisions (e.g., *10K Run*, *500cc Sprint*).
-* **`Enrolments`**: Junction mapping competitors to specific event categories.
-* **`Results`**: Timing outcomes, finish ranks, and completion metrics.
+## 2. Video Presentation
+A comprehensive walkthrough of the system architecture, entity-relationship logic, live SQL execution, and CI/CD workflow validation can be viewed here:
+**YouTube Link:** https://youtu.be/kAgDOKlzyks
 
----
+## 3. System Architecture & Database Design
+The relational database, `RaceDayDb`, is designed with strict adherence to normalization and data integrity principles. 
 
-## CI/CD Pipeline Integration
-This repository integrates **GitHub Actions** (`build-validation.yml`) to ensure continuous validation:
-1. **Directory Structure Verification**: Ensures the mandatory `/docs` folder exists on every push.
-2. **Schema Script Validation**: Asserts that `RaceDay_Schema.sql` is present and trackable.
-3. **Automated Build Checks**: Prepares the build environment for .NET 8 solution compilation.
+* **Roles & Users (1...1 to 1...*):** Role-based access control defining 'Organisers' and 'Participants'.
+* **Events & EventCategories (1...1 to 1...*):** An event contains multiple tiered categories (e.g., 5km, 10km, 21km) with unique entry fees and participant capacity limits.
+* **Enrolments (1...1 to 0...*):** A junction mapping that securely links an authenticated User to a specific EventCategory.
+* **Results (1...1 to 0...1):** A one-to-one mapping with completed enrolments to capture official finish times and overall positioning.
 
----
+*See `docs/ERD_Diagram.png` for the visual mapping of these relationships.*
 
-## Execution Instructions
-1. Clone the repository:
-```
-   git clone https://github.com/OlwethuQzondi/PROG6212-POE-RaceDay.git
-```
+## 4. API Endpoint Plan
+The backend architecture is structured around RESTful design principles, segmented into functional resource groups to handle client-server communication.
 
-2. Run `docs/RaceDay_Schema.sql` inside **SQL Server Management Studio (SSMS)** or **Azure Data Studio** to instantiate `RaceDayDb` and seed default administrative records.
+| Resource Group | HTTP Method | Endpoint | Description | Permission Level |
+| :--- | :--- | :--- | :--- | :--- |
+| **Authentication** | POST | `/api/auth/register` | Registers a new user account. | Public |
+| **Authentication** | POST | `/api/auth/login` | Authenticates a user and returns a token. | Public |
+| **Events** | GET | `/api/events` | Retrieves a list of upcoming races. | Public |
+| **Events** | POST | `/api/events` | Creates a new sporting event. | Organiser |
+| **Enrolments** | POST | `/api/enrolments` | Registers a participant for a category. | Participant |
+| **Results** | POST | `/api/results` | Records official race completion times. | Organiser |
+
+*See `docs/Endpoint_Plan.md` for full payload schemas and HTTP status code definitions.*
+
+## 5. Database Setup & Execution Instructions
+To initialize the backend environment and populate the seed data, execute the provided T-SQL script in Microsoft SQL Server.
+
+1. Launch **SQL Server Management Studio (SSMS)**.
+2. Connect to the local server instance (`localhost\SQLEXPRESS`) using Windows Authentication.
+3. Open the `docs/RaceDay_Schema.sql` file.
+4. Execute the script (`F5`).
+   * *Note: The script is idempotent. It will safely drop existing tables before creating the `RaceDayDb` database, defining all primary/foreign key constraints, and inserting the base testing data.*
+5. Verification screenshots proving successful execution and data population are located at:
+   * `docs/ssms_schema_creation_proof.png`
+   * `docs/ssms_seed_data_proof.png`
+
+## 6. Version Control & Continuous Integration
+This project utilizes Git for version control, maintaining a history of meaningful, atomic commits. A GitHub Actions CI pipeline (`build-validation.yml`) is configured to automatically validate the integrity of the documentation directory upon every push to the `main` branch.
+
+* **Repository:** https://github.com/OlwethuQzondi/PROG6212-POE-RaceDay
+* **Workflow Status:** ![CI Status](https://github.com/OlwethuQzondi/PROG6212-POE-RaceDay/actions/workflows/build-validation.yml/badge.svg)
+* *See `docs/ci_workflow_passing.png` for visual proof of the consistent build history.*
