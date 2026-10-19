@@ -21,7 +21,7 @@ Access control is enforced server-side using secure password hashing through `IP
 
 A walkthrough of the running API, code structure, Swagger UI, session authentication, and xUnit test execution can be viewed here.
 
-**YouTube Link:** [Insert Your Unlisted YouTube Video Link Here](#)
+**YouTube Link:** https://youtu.be/2wen0PkEUCw(#)
 
 ## 3. System Roles & Security Model
 
