@@ -4,5 +4,100 @@
         <name>RaceDay.Api</name>
     </assembly>
     <members>
+        <member name="T:RaceDay.Api.Controllers.AuthController">
+            <summary>
+            Handles user registration, authentication, and session identity management.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.AuthController.Register(RaceDay.Api.DTOs.RegisterDto)">
+            <summary>
+            Registers a new Organiser or Participant account with password hashing.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.AuthController.Login(RaceDay.Api.DTOs.LoginDto)">
+            <summary>
+            Authenticates user credentials and establishes a server-side session.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.AuthController.Logout">
+            <summary>
+            Logs out the user and clears the current server-side session state.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.AuthController.GetProfile">
+            <summary>
+            Retrieves the profile information for the currently authenticated user.
+            </summary>
+        </member>
+        <member name="T:RaceDay.Api.Controllers.CategoriesController">
+            <summary>
+            Manages event distance/age categories.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.CategoriesController.GetCategoriesByEvent(System.Int32)">
+            <summary>
+            Retrieves all categories for a specific event.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.CategoriesController.AddCategory(System.Int32,RaceDay.Api.DTOs.CreateCategoryDto)">
+            <summary>
+            Adds a category to an existing event (Organiser role required).
+            </summary>
+        </member>
+        <member name="T:RaceDay.Api.Controllers.EnrolmentsController">
+            <summary>
+            Handles participant registrations for race categories.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.EnrolmentsController.Enrol(RaceDay.Api.DTOs.CreateEnrolmentDto)">
+            <summary>
+            Enrols an authenticated Participant into an event category.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.EnrolmentsController.GetEnrolmentsForEvent(System.Int32)">
+            <summary>
+            Retrieves all enrolments for an event (Organiser role required).
+            </summary>
+        </member>
+        <member name="T:RaceDay.Api.Controllers.EventsController">
+            <summary>
+            Manages sporting event creation, updates, deletion, and public event browsing.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.EventsController.GetAllEvents">
+            <summary>
+            Retrieves all scheduled sporting events and their category sub-divisions.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.EventsController.GetEventById(System.Int32)">
+            <summary>
+            Retrieves detailed information for a single event by ID.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.EventsController.CreateEvent(RaceDay.Api.DTOs.CreateEventDto)">
+            <summary>
+            Creates a new race event with distance categories (Organiser role required).
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.EventsController.DeleteEvent(System.Int32)">
+            <summary>
+            Deletes an event (Organiser role required).
+            </summary>
+        </member>
+        <member name="T:RaceDay.Api.Controllers.ResultsController">
+            <summary>
+            Captures and publishes official race results.
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.ResultsController.RecordResult(RaceDay.Api.DTOs.CreateResultDto)">
+            <summary>
+            Records finish time and rank for an enrolment (Organiser role required).
+            </summary>
+        </member>
+        <member name="M:RaceDay.Api.Controllers.ResultsController.GetMyResults">
+            <summary>
+            Retrieves the personal race results for the logged-in participant.
+            </summary>
+        </member>
     </members>
 </doc>
